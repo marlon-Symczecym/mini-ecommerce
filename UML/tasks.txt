@@ -1,0 +1,3 @@
+Implementar Ver todos produtos
+Implementar Editar informações de um produto {cm:2020-12-27}
+Implementar validação no metodo register_product para não deixar registrar produtos com nomes iguais {cm:2020-12-26}
