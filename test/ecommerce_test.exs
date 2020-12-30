@@ -69,4 +69,13 @@ defmodule EcommerceTest do
     assert Ecommerce.delete_product("Cadeira estofada", "Cadeira") ==
              {:ok, "Produto Cadeira estofada da categoria Cadeira deletado com sucesso!"}
   end
+
+  test "deve atualizar um atributo de um produto" do
+    Ecommerce.register_category("Cadeira")
+    Ecommerce.register_product("Cadeira estofada", "Linda cadeira", "1200", "Cadeira", 5)
+
+    assert Ecommerce.update_atribute_product("Cadeira estofada", "Cadeira", "name", "Teste") ==
+             {:ok,
+              "Produto Cadeira estofada com atualicação no atributo name agora ta com: Teste"}
+  end
 end
