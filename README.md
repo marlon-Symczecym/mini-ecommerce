@@ -1,21 +1,22 @@
 # Ecommerce
 
-**TODO: Add description**
+O projeto foi feito com base no curso Elxpro ministrado pelo professor Gustavo Oliveira, fazendo parte da fase 1 do curso, onde foi ensinado a base do elixir, passando por todas as etapas de manipulação de dados, de arquivos e estruturas, chegando assim ao final com um projeto de Ecommerce, documentado e com 100% de cobertura de teste utilizando a linguagem `Elixir`.
 
-## Installation
+# RESULTADO
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ecommerce` to your list of dependencies in `mix.exs`:
+O resultado do projeto foi uma aplicacao usando o terminal, chamando os métodos para fazer as funções estabelecidas, como registrar um novo produto, fazer alteração em algum atributo de um produto, deletar produto, ações com categorias, ou imprimir informações.
+O resultado também consta toda a documentação do projeto, precisando fazer apenas o seguinte;
 
-```elixir
-def deps do
-  [
-    {:ecommerce, "~> 0.1.0"}
-  ]
-end
-```
+- Clonar o repositório em questão
+- Ter o elixir e erlang instalado na máquina.
+- Abrir o projeto em seu editor ou pelo terminal
+- Executar o comando `mix deps.get`
+- Executar o comando `mix docs`
+- Entrar na pasta `doc`
+- Abrir o arquivo `index.html` podendo assim acessar toda a documentação do projeto
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ecommerce](https://hexdocs.pm/ecommerce).
+## AUTOR
 
+Marlon Symczecym
+
+**Linkedin:** [Marlon Symczecym](https://www.linkedin.com/in/marlonsymczecym/)
