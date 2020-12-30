@@ -1,20 +1,31 @@
 defmodule Product do
-  defstruct name: nil, description: nil, category: nil, price: nil
+  @moduledoc """
+
+  """
+  defstruct name: nil, description: nil, category: nil, price: nil, stock: nil
 
   @categorys_path "categorys"
 
-  def register_product(name, description, price, category) do
-    case Categorys.category_exists(category) do
-      false ->
-        {:error, "Categoria inesistente"}
-
-      true ->
+  def register_product(name, description, price, category, stock) do
+    cond do
+      Categorys.category_exists(category) == true ->
         (read(category) ++
-           [%__MODULE__{name: name, description: description, category: category, price: price}])
+           [
+             %__MODULE__{
+               name: name,
+               description: description,
+               category: category,
+               price: price,
+               stock: stock
+             }
+           ])
         |> :erlang.term_to_binary()
         |> write(category)
 
         {:ok, "Produto #{name} cadastrado com sucesso na categoria #{category}!"}
+
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria inesistente"}
     end
   end
 

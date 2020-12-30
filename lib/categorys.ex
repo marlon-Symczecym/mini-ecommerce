@@ -2,40 +2,42 @@ defmodule Categorys do
   @categorys_path "categorys"
 
   def register_category(category) do
-    case category_exists(category) do
-      false ->
+    cond do
+      category_exists(category) == true ->
+        {:error, "Categoria #{category} ja existe!"}
+
+      category_exists(category) == false ->
         File.write("#{@categorys_path}/#{category}.txt", :erlang.term_to_binary([]))
 
         {:ok, "Categoria #{category} registrado com sucesso!"}
-
-      true ->
-        {:error, "Categoria #{category} ja existe!"}
     end
   end
 
   def rename_file_category(old_category, new_category) do
-    case category_exists(old_category) do
-      false ->
-        {:error, "Categoria #{old_category} nao pode ser renomeado, pois nao existe!"}
+    IO.inspect(category_exists(old_category))
 
-      true ->
+    cond do
+      category_exists(old_category) == true ->
         File.rename(
           "#{@categorys_path}/#{old_category}.txt",
           "#{@categorys_path}/#{new_category}.txt"
         )
 
         {:ok, "Categoria #{old_category} renomeado para #{new_category} com sucesso!"}
+
+      category_exists(old_category) == false ->
+        {:error, "Categoria #{old_category} nao pode ser renomeado, pois nao existe!"}
     end
   end
 
   def delete_category(category) do
-    case category_exists(category) do
-      false ->
-        {:error, "Categoria #{category} nao pode ser deletada, pois nao existe!"}
-
-      true ->
+    cond do
+      category_exists(category) == true ->
         File.rm("#{@categorys_path}/#{category}.txt")
         {:ok, "Categoria #{category} deletado com sucesso!"}
+
+      category_exists(category) == false ->
+        {:error, "Categoria #{category} nao pode ser deletada, pois nao existe!"}
     end
   end
 

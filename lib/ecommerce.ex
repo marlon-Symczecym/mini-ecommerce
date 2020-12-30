@@ -1,8 +1,6 @@
 defmodule Ecommerce do
   def start do
     File.mkdir("categorys")
-    File.cd("categorys")
-    File.write("all.txt", :erlang.term_to_binary([]))
   end
 
   def show_categorys do
@@ -21,8 +19,8 @@ defmodule Ecommerce do
     Categorys.delete_category(category)
   end
 
-  def register_product(name, description, price, category) do
-    Product.register_product(name, description, price, category)
+  def register_product(name, description, price, category, stock) do
+    Product.register_product(name, description, price, category, stock)
   end
 
   def read_product(name, category) do
