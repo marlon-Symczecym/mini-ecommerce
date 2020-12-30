@@ -1,6 +1,23 @@
 defmodule Categorys do
+  @moduledoc """
+  Modulo de Categorias onde é feito o registro e manutenção das categorias
+
+  A função mais utilizada é `Categorys.register_category/1`
+  """
   @categorys_path "categorys"
 
+  @doc """
+  Funcao faz o registro de uma nova categoria
+
+  ## Parametro da funcao
+
+  - category: nome da nova categoria
+
+  ## Exemplo
+
+      iex> Categorys.register_category("Teste")
+      {:ok, "Categoria Teste registrado com sucesso!"}
+  """
   def register_category(category) do
     cond do
       category_exists(category) == true ->
@@ -13,9 +30,25 @@ defmodule Categorys do
     end
   end
 
-  def rename_file_category(old_category, new_category) do
-    IO.inspect(category_exists(old_category))
+  @doc """
+  Funcao renomeia uma categoria ja existente
 
+  ## Parametros da funcao
+
+  - old_category: nome da categoria que esta querendo renomear
+  - new_category: novo nome para a categoria
+
+  ## Informacoes adicionais
+
+  - Se a categoria que sera renomeada nao existir, retorna uma tupla com erro e mensagem
+
+  ## Exemplo
+
+      iex> Categorys.rename_file_category("Teste", "TesteNovo")
+      {:error, "Categoria Teste nao pode ser renomeado, pois nao existe!"}
+
+  """
+  def rename_file_category(old_category, new_category) do
     cond do
       category_exists(old_category) == true ->
         File.rename(
@@ -30,6 +63,22 @@ defmodule Categorys do
     end
   end
 
+  @doc """
+  Funcao deleta uma categoria
+
+  ## Parametro da funcao
+
+  - category: nome da categoria que ira deleta
+
+  ## Informacoes adicionais
+
+  - Se a categoria que sera renomeada nao existir, retorna uma tupla com erro e mensagem
+
+  ## Exemplo
+
+      iex> Categorys.delete_category("Teste")
+      {:error, "Categoria Teste nao pode ser deletada, pois nao existe!"}
+  """
   def delete_category(category) do
     cond do
       category_exists(category) == true ->
@@ -41,10 +90,26 @@ defmodule Categorys do
     end
   end
 
+  @doc """
+  Funcao que verifica se uma categoria existe
+
+  ## Parametro da funcao
+
+  - category: nome da categoria que sera verificada
+
+
+  ## Exemplo
+
+      iex> Categorys.category_exists("Teste")
+      false
+  """
   def category_exists(category) do
     File.exists?("#{@categorys_path}/#{category}.txt")
   end
 
+  @doc """
+  Funcao que mostra informacoes das categorias
+  """
   def show_info_categorys do
     {:ok, categorys} = File.ls("#{@categorys_path}")
 

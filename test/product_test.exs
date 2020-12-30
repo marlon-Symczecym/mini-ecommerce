@@ -54,7 +54,7 @@ defmodule ProductTest do
     Categorys.register_category("Cadeira")
     Product.register_product("Cadeira estofada", "Linda cadeira", "1200", "Cadeira", 5)
 
-    assert Product.update_product("Cadeira estofada", "Cadeira Branca", "Cadeira", "name") ==
+    assert Product.update_product("Cadeira estofada", "Cadeira", "name", "Cadeira Branca") ==
              {:ok,
               "Produto Cadeira estofada com atualicação no atributo name agora ta com: Cadeira Branca"}
   end
