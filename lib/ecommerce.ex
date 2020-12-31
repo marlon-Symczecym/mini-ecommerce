@@ -10,6 +10,7 @@ defmodule Ecommerce do
   """
   def start do
     File.mkdir("categorys")
+    {:ok, "Pasta de categorias criada com sucesso!"}
   end
 
   @doc """
