@@ -1,5 +1,6 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
+/.elixir_ls
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
@@ -25,3 +26,6 @@ ecommerce-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+# Paste files
+/categorys

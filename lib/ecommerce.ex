@@ -4,12 +4,13 @@ defmodule Ecommerce do
 
   A funcao mais utilizada `Ecommerce.read_product/2`
   """
+  @categorys_path "categorys"
 
   @doc """
   Funcao que criara a pasta onde ira ficar os registros de categorias e produtos
   """
   def start do
-    File.mkdir("categorys")
+    File.mkdir(@categorys_path)
     {:ok, "Pasta de categorias criada com sucesso!"}
   end
 
@@ -24,7 +25,14 @@ defmodule Ecommerce do
   Funcao que faz o registro de uma nova categoria, chamando a funcao `Categorys.register_category/1`
   """
   def register_category(category) do
-    Categorys.register_category(category)
+    cond do
+      File.exists?(@categorys_path) == true ->
+        Categorys.register_category(category)
+
+      File.exists?(@categorys_path) == false ->
+        start()
+        Categorys.register_category(category)
+    end
   end
 
   @doc """
