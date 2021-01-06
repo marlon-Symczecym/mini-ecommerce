@@ -80,7 +80,7 @@ defmodule Client do
   end
 
   def show_client(name, cpf) do
-    case read |> Enum.find(&(&1.name == name && &1.cpf == cpf)) do
+    case read() |> Enum.find(&(&1.name == name && &1.cpf == cpf)) do
       nil ->
         {:error, "Cliente nao encontrado"}
 
