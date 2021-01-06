@@ -105,6 +105,9 @@ defmodule Client do
         ]
 
         delete_item(client)
+        |> :erlang.term_to_binary()
+        |> write()
+
         {:ok, "#{name} com CPF: #{cpf} foi deletado"}
     end
   end
