@@ -58,7 +58,7 @@ defmodule Client do
     File.write(@client_path, list_clients)
   end
 
-  defp read() do
+  def read() do
     {:ok, file} = File.read(@client_path)
 
     file
@@ -99,10 +99,7 @@ defmodule Client do
         {:error, "Cliente nao encontrado"}
 
       meet_client !== nil ->
-        client = [
-          read()
-          |> Enum.find(&(&1.name == name && &1.cpf == cpf))
-        ]
+        client = [meet_client]
 
         delete_item(client)
         |> :erlang.term_to_binary()
@@ -110,6 +107,21 @@ defmodule Client do
 
         {:ok, "#{name} com CPF: #{cpf} foi deletado"}
     end
+  end
+
+  def update_client(name, cpf, attr, new_value) do
+    meet_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+
+    client =
+      [meet_client]
+      |> delete_item()
+
+    (client ++ [%{meet_client | "#{attr}": new_value}])
+    |> :erlang.term_to_binary()
+    |> write()
+
+    {:ok,
+     "Cliente #{name} com CPF: #{cpf}, atualizou: #{attr}: #{name}, para: nome: #{new_value}"}
   end
 
   defp delete_item(client) do

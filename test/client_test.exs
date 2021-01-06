@@ -97,5 +97,37 @@ defmodule ClientTest do
     )
 
     assert Client.delete_client("Josue", "7787") == {:ok, "Josue com CPF: 7787 foi deletado"}
+    assert Client.show_all() == {:error, "Sem clientes cadastrasdos"}
+  end
+
+  test "deve atualizar informacoes de um cliente" do
+    Client.register_client(
+      "Josue",
+      "7787",
+      "12345345",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "56456"
+    )
+
+    Client.register_client(
+      "Andre",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Client.update_client("Josue", "7787", "name", "Maria") ==
+             {:ok, "Cliente Josue com CPF: 7787, atualizou: name: Josue, para: nome: Maria"}
+
+    assert Client.read() |> Enum.count() == 2
   end
 end

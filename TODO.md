@@ -6,6 +6,7 @@ Project Description
 
 - Implementar fazer compra de produtos  
 - Implementar validação no metodo register_product para não deixar registrar produtos com nomes iguais  
+- Refator a delecao de um produto com Enum.reduce  
 
 ### In Progress
 
