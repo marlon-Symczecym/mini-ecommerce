@@ -91,6 +91,29 @@ defmodule Client do
     end
   end
 
+  def delete_client(name, cpf) do
+    meet_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+
+    cond do
+      meet_client == nil ->
+        {:error, "Cliente nao encontrado"}
+
+      meet_client !== nil ->
+        client = [
+          read()
+          |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+        ]
+
+        delete_item(client)
+        {:ok, "#{name} com CPF: #{cpf} foi deletado"}
+    end
+  end
+
+  defp delete_item(client) do
+    client
+    |> Enum.reduce(read(), fn x, acc -> List.delete(acc, x) end)
+  end
+
   defp echo(client) do
     IO.puts("================")
     IO.puts("Nome: #{client.name}")

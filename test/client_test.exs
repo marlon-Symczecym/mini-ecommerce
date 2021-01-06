@@ -82,4 +82,20 @@ defmodule ClientTest do
 
     assert Client.show_client("Josue", "7787") == :ok
   end
+
+  test "deve deletar um cliente" do
+    Client.register_client(
+      "Josue",
+      "7787",
+      "12345345",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "Teste2",
+      "56456"
+    )
+
+    assert Client.delete_client("Josue", "7787") == {:ok, "Josue com CPF: 7787 foi deletado"}
+  end
 end

@@ -4,16 +4,16 @@ Project Description
 
 ### Todo
 
-- Implementar atualizar cliente  
 - Implementar fazer compra de produtos  
 - Implementar validação no metodo register_product para não deixar registrar produtos com nomes iguais  
 
 ### In Progress
 
-- Implementar deletar cliente  
+- Implementar atualizar cliente  
 
 ### Done ✓
 
+- Implementar deletar cliente  
 - Implementar ver um cliente  
 - Implementar ver todos os clientes  
 - Implementar ver todos os clientes  
