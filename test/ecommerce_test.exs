@@ -51,8 +51,14 @@ defmodule EcommerceTest do
   test "deve cadastrar um produto" do
     Ecommerce.register_category("Cadeira")
 
-    assert Ecommerce.register_product("Cadeira alta", "Linda cadeira", "1200", "Cadeira", 5) ==
-             {:ok, "Produto Cadeira alta cadastrado com sucesso na categoria Cadeira!"}
+    assert Ecommerce.register_product(
+             "Cadeira alta com braco",
+             "Linda cadeira",
+             "1200",
+             "Cadeira",
+             5
+           ) ==
+             {:ok, "Produto Cadeira alta com braco cadastrado com sucesso na categoria Cadeira!"}
   end
 
   test "deve imprimir um produto de uma categoria especifica" do
@@ -82,7 +88,6 @@ defmodule EcommerceTest do
     Ecommerce.register_product("Cadeira estofada", "Linda cadeira", "1200", "Cadeira", 5)
 
     assert Ecommerce.update_atribute_product("Cadeira estofada", "Cadeira", "name", "Teste") ==
-             {:ok,
-              "Produto Cadeira estofada com atualicação no atributo name agora ta com: Teste"}
+             {:ok, "Produto atualizado com sucesso !"}
   end
 end

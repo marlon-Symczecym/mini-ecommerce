@@ -26,7 +26,7 @@ defmodule Product do
   ## Exemplo
 
       iex> Product.register_product("Teste", "Linda cadeira", "1200", "Cadeira", 5)
-      {:error, "Categoria inesistente"}
+      {:error, "Categoria inexistente"}
   """
   def register_product(name, description, price, category, stock) do
     cond do
@@ -47,7 +47,7 @@ defmodule Product do
         {:ok, "Produto #{name} cadastrado com sucesso na categoria #{category}!"}
 
       Categorys.category_exists(category) == false ->
-        {:error, "Categoria inesistente"}
+        {:error, "Categoria inexistente"}
     end
   end
 
@@ -90,9 +90,15 @@ defmodule Product do
   - category: categoria que deseja ver os produtos
   """
   def read_products_category(category) do
-    category
-    |> read()
-    |> Enum.each(&echo/1)
+    cond do
+      Categorys.category_exists(category) == true ->
+        category
+        |> read()
+        |> Enum.each(&echo/1)
+
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria inexistente"}
+    end
   end
 
   @doc """
@@ -104,10 +110,16 @@ defmodule Product do
   - category: categoria que deseja ver os produtos
   """
   def read_product(name, category) do
-    category
-    |> read()
-    |> Enum.find(&(&1.name === name))
-    |> echo()
+    cond do
+      Categorys.category_exists(category) == true ->
+        category
+        |> read()
+        |> Enum.find(&(&1.name === name))
+        |> echo()
+
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria ou produto inexistente"}
+    end
   end
 
   @doc """
@@ -119,9 +131,15 @@ defmodule Product do
   - category: categoria que deseja ver os produtos
   """
   def find_product(name, category) do
-    category
-    |> read()
-    |> Enum.find(&(&1.name === name))
+    cond do
+      Categorys.category_exists(category) == true ->
+        category
+        |> read()
+        |> Enum.find(&(&1.name === name))
+
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria ou produto inexistente"}
+    end
   end
 
   @doc """
@@ -133,20 +151,23 @@ defmodule Product do
   - category: categoria que deseja deletar o produto
   """
   def delete_product(name, category) do
-    list_category =
-      category
-      |> read()
+    cond do
+      Categorys.category_exists(category) == true ->
+        read(category)
+        |> delete_item(category)
+        |> :erlang.term_to_binary()
+        |> write(category)
 
-    product_delete =
-      list_category
-      |> Enum.find(&(&1.name === name))
+        {:ok, "Produto #{name} da categoria #{category} deletado com sucesso!"}
 
-    list_category
-    |> List.delete(product_delete)
-    |> :erlang.term_to_binary()
-    |> write(category)
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria ou produto inexistente"}
+    end
+  end
 
-    {:ok, "Produto #{name} da categoria #{category} deletado com sucesso!"}
+  defp delete_item(list_products, category) do
+    list_products
+    |> Enum.reduce(read(category), fn x, acc -> List.delete(acc, x) end)
   end
 
   @doc """
@@ -160,26 +181,26 @@ defmodule Product do
   - new_value: novo valor que o atributo recebera
   """
   def update_product(name, category, attr, new_value) do
-    updated_product =
-      category
-      |> read()
-      |> Enum.find(&(&1.name === name))
-      |> update_atribute(attr, new_value)
+    cond do
+      Categorys.category_exists(category) == true ->
+        updated_product =
+          category
+          |> read()
+          |> Enum.find(&(&1.name === name))
+          |> update_atribute(attr, new_value)
 
-    old_product =
-      category
-      |> read()
-      |> Enum.find(&(&1.name === name))
+        category
+        |> read()
+        |> delete_item(category)
+        |> List.insert_at(0, updated_product)
+        |> :erlang.term_to_binary()
+        |> write(category)
 
-    category
-    |> read()
-    |> List.delete(old_product)
-    |> List.insert_at(0, updated_product)
-    |> :erlang.term_to_binary()
-    |> write(category)
+        {:ok, "Produto atualizado com sucesso !"}
 
-    {:ok,
-     "Produto #{old_product.name} com atualicação no atributo #{attr} agora ta com: #{new_value}"}
+      Categorys.category_exists(category) == false ->
+        {:error, "Categoria ou produto inexistente"}
+    end
   end
 
   defp update_atribute(product, attr, new_value) do

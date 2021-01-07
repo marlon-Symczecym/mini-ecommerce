@@ -245,7 +245,14 @@ defmodule Client do
     IO.puts("Valor gasto: R$ #{client.value_spent} reais")
   end
 
-  defp echo_purchases(product) do
+  @doc """
+  Funcao que ira imprimir informacoes das compras
+
+  ## Parametros da funcao
+
+  - product: estrutura de produto ou produtos que serao exibidos informacoes
+  """
+  def echo_purchases(product) do
     IO.puts("================")
     IO.puts("Nome: #{product.name}")
     IO.puts("Descrição: #{product.description}")

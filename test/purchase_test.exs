@@ -13,7 +13,7 @@ defmodule PurchaseTest do
 
   test "deve fazer uma compra" do
     Ecommerce.register_category("Cadeiras")
-    Ecommerce.register_product("Cadeira alta", "Linda cadeira", 1200, "Cadeiras", 5)
+    Ecommerce.register_product("Cadeira alta com listras", "Linda cadeira", 1200, "Cadeiras", 5)
 
     Client.register_client(
       "Maria",
@@ -27,12 +27,12 @@ defmodule PurchaseTest do
       "123"
     )
 
-    assert Purchase.buy("Maria", "1234", "Cadeira alta", "Cadeiras", 3) ==
-             {:ok, "Cliente Maria acabou de comprar 3 Cadeira alta !"}
+    assert Purchase.buy("Maria", "1234", "Cadeira alta com listras", "Cadeiras", 3) ==
+             {:ok, "Cliente Maria acabou de comprar 3 Cadeira alta com listras !"}
 
-    Purchase.buy("Maria", "1234", "Cadeira alta", "Cadeiras", 1)
-    Purchase.buy("Maria", "1234", "Cadeira alta", "Cadeiras", 1)
-    Purchase.buy("Maria", "1234", "Cadeira alta", "Cadeiras", 1)
+    Purchase.buy("Maria", "1234", "Cadeira alta com listras", "Cadeiras", 1)
+    Purchase.buy("Maria", "1234", "Cadeira alta com listras", "Cadeiras", 1)
+    Purchase.buy("Maria", "1234", "Cadeira alta com listras", "Cadeiras", 1)
 
     assert Client.find_purchases_client("Maria", "1234") |> Enum.count() == 3
   end
