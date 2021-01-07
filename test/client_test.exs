@@ -39,6 +39,32 @@ defmodule ClientTest do
            ) == {:ok, "Cliente Teste registrado com sucesso"}
   end
 
+  test "nao deve registrar um cliente com cpf iguais" do
+    Client.register_client(
+      "Teste",
+      "1234",
+      "55551211",
+      "Teste",
+      "Teste",
+      "Teste",
+      "Teste",
+      "Teste",
+      "123"
+    )
+
+    assert Client.register_client(
+             "Teste",
+             "1234",
+             "55551211",
+             "Teste",
+             "Teste",
+             "Teste",
+             "Teste",
+             "Teste",
+             "123"
+           ) == {:error, "Ja existe cliente cadastrado com esse CPF: 1234"}
+  end
+
   test "deve imprimir todos os clientes" do
     Client.register_client(
       "Maria",

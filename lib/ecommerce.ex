@@ -6,6 +6,7 @@ defmodule Ecommerce do
   """
   @categorys_path "categorys"
   @client_filepath "clients"
+  @client_path "#{@client_filepath}/#{@client_file}"
 
   @doc """
   Funcao que criara a pasta onde ira ficar os registros de categorias e produtos
@@ -13,7 +14,7 @@ defmodule Ecommerce do
   def start do
     File.mkdir(@categorys_path)
     File.mkdir(@client_filepath)
-    File.write("#{@client_filepath}/clients.txt", :erlang.term_to_binary([]))
+    File.write(@client_path, :erlang.term_to_binary([]))
   end
 
   @doc """
@@ -86,6 +87,43 @@ defmodule Ecommerce do
     Product.update_product(name, category, attr, new_value)
   end
 
+  @doc """
+  Funcao para registrar um novo cliente, chamando a funcao `Client.register_client/9`
+  """
+  def register_client(name, cpf, tel, country, state, city, district, street, house_number) do
+    Client.register_client(name, cpf, tel, country, state, city, district, street, house_number)
+  end
+
+  @doc """
+  Funcao para mostrar todos os clientes cadastrados, chamando a funcao `Client.show_all/0`
+  """
+  def show_all(), do: Client.show_all()
+
+  @doc """
+  Funcao para mostrar um cliente em especifico, chamando a funcao `Client.show_client/2`
+  """
+  def show_client(name, cpf), do: Client.show_client(name, cpf)
+
+  @doc """
+  Funcao para exibir informacoes das compras de um cliente, chamando a funcao `Client.show_purchases_client/2`
+  """
+  def show_purchases_client(name, cpf), do: Client.show_purchases_client(name, cpf)
+
+  @doc """
+  Funcao que deleta um cliente em especifico, chamando a funcao `Client.delete_client/2`
+  """
+  def delete_client(name, cpf), do: Client.delete_client(name, cpf)
+
+  @doc """
+  Funcao que atualiza algum atributo de um cliente em especifico, chamando a funcao `Client.update_client/5`
+  """
+  def update_client(name, cpf, attr, new_value) do
+    Client.update_client(name, cpf, attr, new_value)
+  end
+
+  @doc """
+  Funcao para fazer a compra de um produto, chamando a funcao `Purchase.buy/5`
+  """
   def buy(name_client, cpf, name_product, category, qtd) do
     Purchase.buy(name_client, cpf, name_product, category, qtd)
   end

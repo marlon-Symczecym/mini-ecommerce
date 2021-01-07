@@ -35,25 +35,31 @@ defmodule Client do
   - house_number: numero da casa
   """
   def register_client(name, cpf, tel, country, state, city, district, street, house_number) do
-    (read() ++
-       [
-         %__MODULE__{
-           name: name,
-           cpf: cpf,
-           telephone: tel,
-           country: country,
-           state: state,
-           city: city,
-           district: district,
-           street: street,
-           value_spent: 0,
-           house_number: house_number
-         }
-       ])
-    |> :erlang.term_to_binary()
-    |> write()
+    cond do
+      find_client_cpf(cpf) == {:error, "Cliente nao encontrado"} ->
+        (read() ++
+           [
+             %__MODULE__{
+               name: name,
+               cpf: cpf,
+               telephone: tel,
+               country: country,
+               state: state,
+               city: city,
+               district: district,
+               street: street,
+               value_spent: 0,
+               house_number: house_number
+             }
+           ])
+        |> :erlang.term_to_binary()
+        |> write()
 
-    {:ok, "Cliente #{name} registrado com sucesso"}
+        {:ok, "Cliente #{name} registrado com sucesso"}
+
+      find_client_cpf(cpf) !== {:error, "Cliente nao encontrado"} ->
+        {:error, "Ja existe cliente cadastrado com esse CPF: #{cpf}"}
+    end
   end
 
   def write(list_clients) do
@@ -120,6 +126,17 @@ defmodule Client do
       _ ->
         read()
         |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+    end
+  end
+
+  def find_client_cpf(cpf) do
+    case read() |> Enum.find(&(&1.cpf == cpf)) do
+      nil ->
+        {:error, "Cliente nao encontrado"}
+
+      _ ->
+        read()
+        |> Enum.find(&(&1.cpf == cpf))
     end
   end
 

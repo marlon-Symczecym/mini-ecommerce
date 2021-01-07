@@ -2,11 +2,18 @@ defmodule EcommerceTest do
   use ExUnit.Case
   doctest Ecommerce
 
+  @client_filepath "clients"
+  @client_file "clients.txt"
+  @client_path "#{@client_filepath}/#{@client_file}"
+
   setup do
     File.mkdir("categorys")
+    File.mkdir(@client_filepath)
+    File.write(@client_path, :erlang.term_to_binary([]))
 
     on_exit(fn ->
       File.rm_rf("categorys")
+      # File.rm_rf("clients")
     end)
   end
 
@@ -89,5 +96,117 @@ defmodule EcommerceTest do
 
     assert Ecommerce.update_atribute_product("Cadeira estofada", "Cadeira", "name", "Teste") ==
              {:ok, "Produto atualizado com sucesso !"}
+  end
+
+  test "deve fazer a compra de um produto" do
+    Ecommerce.register_category("Cadeiras")
+    Ecommerce.register_product("Cadeira alta com listras 2", "Linda cadeira", 1200, "Cadeiras", 5)
+
+    Ecommerce.register_client(
+      "Joao",
+      "12345",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Ecommerce.buy("Joao", "12345", "Cadeira alta com listras 2", "Cadeiras", 3) ==
+             {:ok, "Cliente Joao acabou de comprar 3 Cadeira alta com listras 2 !"}
+
+    Ecommerce.buy("Joao", "12345", "Cadeira alta com listras 2", "Cadeiras", 1)
+    Ecommerce.buy("Joao", "12345", "Cadeira alta com listras 2", "Cadeiras", 1)
+    Ecommerce.buy("Joao", "12345", "Cadeira alta com listras 2", "Cadeiras", 1)
+
+    assert Client.find_purchases_client("Joao", "12345") |> Enum.count() == 3
+  end
+
+  test "deve mostrar todos os clientes" do
+    Ecommerce.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Ecommerce.show_all() == :ok
+  end
+
+  test "deve retornar um cliente especifico" do
+    Ecommerce.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Ecommerce.show_client("Maria", "1234") == :ok
+  end
+
+  test "deve mostrar todas as compras de um cliente" do
+    Ecommerce.register_category("Cadeiras")
+    Ecommerce.register_product("Cadeira alta com listras 4", "Linda cadeira", 1200, "Cadeiras", 5)
+
+    Ecommerce.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    Purchase.buy("Maria", "1234", "Cadeira alta com listras 4", "Cadeiras", 1)
+
+    assert Ecommerce.show_purchases_client("Maria", "1234") == :ok
+  end
+
+  test "deve deletar um cliente" do
+    Ecommerce.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Ecommerce.delete_client("Maria", "1234") == {:ok, "Maria com CPF: 1234 foi deletado"}
+  end
+
+  test "deve atualizar um atributo de um cliente" do
+    Ecommerce.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    assert Ecommerce.update_client("Maria", "1234", "name", "Joao") ==
+             {:ok, "Cliente Maria com CPF: 1234, atualizou: name: Maria, para: nome: Joao"}
   end
 end
