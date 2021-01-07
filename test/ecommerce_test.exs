@@ -28,6 +28,13 @@ defmodule EcommerceTest do
              {:ok, "Categoria Teste registrado com sucesso!"}
   end
 
+  test "deve criar as pastas padrao" do
+    File.rm_rf("categorys")
+
+    assert Ecommerce.register_category("Teste") ==
+             {:ok, "Categoria Teste registrado com sucesso!"}
+  end
+
   test "deve renomear uma categoria" do
     Ecommerce.register_category("Teste")
 

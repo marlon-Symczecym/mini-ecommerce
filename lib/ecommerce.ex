@@ -5,13 +5,15 @@ defmodule Ecommerce do
   A funcao mais utilizada `Ecommerce.read_product/2`
   """
   @categorys_path "categorys"
+  @client_filepath "clients"
 
   @doc """
   Funcao que criara a pasta onde ira ficar os registros de categorias e produtos
   """
   def start do
     File.mkdir(@categorys_path)
-    {:ok, "Pasta de categorias criada com sucesso!"}
+    File.mkdir(@client_filepath)
+    File.write("#{@client_filepath}/clients.txt", :erlang.term_to_binary([]))
   end
 
   @doc """
