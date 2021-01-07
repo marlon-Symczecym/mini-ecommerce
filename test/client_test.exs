@@ -83,6 +83,29 @@ defmodule ClientTest do
     assert Client.show_client("Josue", "7787") == :ok
   end
 
+  test "deve imprimir informacoes das compras do cliente" do
+    Ecommerce.register_category("Poltronas")
+    Ecommerce.register_product("Poltrona alta", "Linda Poltrona", 1200, "Poltronas", 5)
+
+    Client.register_client(
+      "Maria",
+      "1234",
+      "55551211",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "Teste1",
+      "123"
+    )
+
+    Purchase.buy("Maria", "1234", "Poltrona alta", "Poltronas", 3)
+    Purchase.buy("Maria", "1234", "Poltrona alta", "Poltronas", 1)
+    Purchase.buy("Maria", "1234", "Poltrona alta", "Poltronas", 1)
+
+    assert Client.show_purchases_client("Maria", "1234") == :ok
+  end
+
   test "deve deletar um cliente" do
     Client.register_client(
       "Josue",
