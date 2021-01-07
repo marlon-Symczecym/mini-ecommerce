@@ -58,6 +58,9 @@ defmodule Client do
     File.write(@client_path, list_clients)
   end
 
+  @doc """
+  Funcao que le o arquivo dos clientes e retorna os dados transformados em texto
+  """
   def read() do
     {:ok, file} = File.read(@client_path)
 
@@ -79,6 +82,14 @@ defmodule Client do
     end
   end
 
+  @doc """
+  Funcao que mostra um cliente em especifico
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  """
   def show_client(name, cpf) do
     case read() |> Enum.find(&(&1.name == name && &1.cpf == cpf)) do
       nil ->
@@ -91,15 +102,23 @@ defmodule Client do
     end
   end
 
+  @doc """
+  Funcao que deleta um cliente em especifico
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  """
   def delete_client(name, cpf) do
-    meet_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+    find_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
 
     cond do
-      meet_client == nil ->
+      find_client == nil ->
         {:error, "Cliente nao encontrado"}
 
-      meet_client !== nil ->
-        client = [meet_client]
+      find_client !== nil ->
+        client = [find_client]
 
         delete_item(client)
         |> :erlang.term_to_binary()
@@ -109,14 +128,24 @@ defmodule Client do
     end
   end
 
+  @doc """
+  Funcao que atualiza algum atributo de um cliente em especifico
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  - attr: atributo que deseja atualizar
+  - new_value: o novo valor para o atributo selecionado
+  """
   def update_client(name, cpf, attr, new_value) do
-    meet_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+    find_client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
 
     client =
-      [meet_client]
+      [find_client]
       |> delete_item()
 
-    (client ++ [%{meet_client | "#{attr}": new_value}])
+    (client ++ [%{find_client | "#{attr}": new_value}])
     |> :erlang.term_to_binary()
     |> write()
 
