@@ -85,4 +85,8 @@ defmodule Ecommerce do
   def update_atribute_product(name, category, attr, new_value) do
     Product.update_product(name, category, attr, new_value)
   end
+
+  def buy(name_client, cpf, name_product, category, qtd) do
+    Purchase.buy(name_client, cpf, name_product, category, qtd)
+  end
 end

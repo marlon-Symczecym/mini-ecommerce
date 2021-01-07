@@ -17,24 +17,31 @@ defmodule Purchase do
     client = Client.find_client(name_client, cpf)
     product = Product.find_product(name_product, category)
 
-    cond do
-      product.stock >= 1 ->
-        [
-          %Client{
-            client
-            | purchase:
-                Client.find_purchases_client(name_client, cpf) ++ [%Product{product | stock: qtd}],
-              value_spent: client.value_spent + product.price * qtd
-          }
-        ]
-        |> :erlang.term_to_binary()
-        |> Client.write()
+    case Client.find_client(name_client, cpf) do
+      {:error, "Cliente nao encontrado"} ->
+        {:error, "Cliente nao encontrado"}
 
-        Product.update_product(product.name, product.category, "stock", product.stock - qtd)
-        {:ok, "Cliente #{name_client} acabou de comprar #{qtd} #{name_product} !"}
+      _ ->
+        cond do
+          product.stock >= 1 ->
+            [
+              %Client{
+                client
+                | purchase:
+                    Client.find_purchases_client(name_client, cpf) ++
+                      [%Product{product | stock: qtd}],
+                  value_spent: client.value_spent + product.price * qtd
+              }
+            ]
+            |> :erlang.term_to_binary()
+            |> Client.write()
 
-      product.stock <= 0 ->
-        {:error, "Produto esta fora de estoque !"}
+            Product.update_product(product.name, product.category, "stock", product.stock - qtd)
+            {:ok, "Cliente #{name_client} acabou de comprar #{qtd} #{name_product} !"}
+
+          product.stock <= 0 ->
+            {:error, "Produto esta fora de estoque !"}
+        end
     end
   end
 end
