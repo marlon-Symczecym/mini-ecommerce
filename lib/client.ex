@@ -16,6 +16,7 @@ defmodule Client do
             district: nil,
             street: nil,
             house_number: nil,
+            value_spent: 0,
             purchase: []
 
   @doc """
@@ -45,6 +46,7 @@ defmodule Client do
            city: city,
            district: district,
            street: street,
+           value_spent: 0,
            house_number: house_number
          }
        ])
@@ -54,7 +56,7 @@ defmodule Client do
     {:ok, "Cliente #{name} registrado com sucesso"}
   end
 
-  defp write(list_clients) do
+  def write(list_clients) do
     File.write(@client_path, list_clients)
   end
 
@@ -83,7 +85,7 @@ defmodule Client do
   end
 
   @doc """
-  Funcao que mostra um cliente em especifico
+  Funcao que imprime um cliente em especifico
 
   ## Parametros da funcao
 
@@ -99,6 +101,76 @@ defmodule Client do
         read()
         |> Enum.find(&(&1.name == name && &1.cpf == cpf))
         |> echo()
+    end
+  end
+
+  @doc """
+  Funcao que retorna um cliente em especifico
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  """
+  def find_client(name, cpf) do
+    case read() |> Enum.find(&(&1.name == name && &1.cpf == cpf)) do
+      nil ->
+        {:error, "Cliente nao encontrado"}
+
+      _ ->
+        read()
+        |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+    end
+  end
+
+  @doc """
+  Funcao que retorna as compras feitas por um cliente em especifico
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  """
+  def find_purchases_client(name, cpf) do
+    case read() |> Enum.find(&(&1.name == name && &1.cpf == cpf)) do
+      nil ->
+        {:error, "Cliente nao encontrado"}
+
+      _ ->
+        client =
+          read()
+          |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+
+        {:ok, purchases} = Map.fetch(client, :purchase)
+
+        purchases
+    end
+  end
+
+  @doc """
+  Funcao para exibir informacoes das compras de um cliente
+
+  ## Parametros da funcao
+
+  - name: nome do cliente
+  - cpf: numero do cpf do cliente
+  """
+  def show_purchases_client(name, cpf) do
+    client = read() |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+
+    case client do
+      nil ->
+        {:error, "Cliente nao encontrado"}
+
+      _ ->
+        client =
+          read()
+          |> Enum.find(&(&1.name == name && &1.cpf == cpf))
+
+        {:ok, purchases} = Map.fetch(client, :purchase)
+
+        purchases
+        |> Enum.each(&echo_purchases/1)
     end
   end
 
@@ -169,5 +241,15 @@ defmodule Client do
     IO.puts("Bairro: #{client.district}")
     IO.puts("Rua: #{client.street}")
     IO.puts("Numero da casa: #{client.house_number}")
+    IO.puts("Numero de compras: #{client.purchase |> Enum.count()}")
+    IO.puts("Valor gasto: R$ #{client.value_spent} reais")
+  end
+
+  defp echo_purchases(product) do
+    IO.puts("================")
+    IO.puts("Nome: #{product.name}")
+    IO.puts("Descrição: #{product.description}")
+    IO.puts("Preço: R$ #{product.price} reais")
+    IO.puts("Quantidade: #{product.stock}")
   end
 end

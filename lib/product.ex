@@ -96,7 +96,7 @@ defmodule Product do
   end
 
   @doc """
-  Funcao retorna insformacoes de um determinado produto de uma determinada categoria
+  Funcao imprime informacoes de um determinado produto de uma determinada categoria
 
   ## Parametro da funcao
 
@@ -108,6 +108,20 @@ defmodule Product do
     |> read()
     |> Enum.find(&(&1.name === name))
     |> echo()
+  end
+
+  @doc """
+  Funcao retorna um produto de uma determinada categoria
+
+  ## Parametro da funcao
+
+  - name: nome do produto
+  - category: categoria que deseja ver os produtos
+  """
+  def find_product(name, category) do
+    category
+    |> read()
+    |> Enum.find(&(&1.name === name))
   end
 
   @doc """
@@ -176,7 +190,8 @@ defmodule Product do
     IO.puts("--------------------------------")
     IO.puts("Nome: #{product.name}")
     IO.puts("Descrição: #{product.description}")
-    IO.puts("Preço: #{product.price}")
+    IO.puts("Preço: R$ #{product.price} reais")
+    IO.puts("Stock: #{product.stock}")
     IO.puts("----------------------------------")
   end
 end
