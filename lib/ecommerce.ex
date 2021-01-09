@@ -6,6 +6,7 @@ defmodule Ecommerce do
   """
   @categorys_path "categorys"
   @client_filepath "clients"
+  @client_file "clients.txt"
   @client_path "#{@client_filepath}/#{@client_file}"
 
   @doc """
